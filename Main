@@ -1,26 +1,14 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Window = OrionLib:MakeWindow({Name = "Markerware", HidePremium = false, SaveConfig = true, ConfigFolder = "Mware"})
+game:GetService("RunService").Heartbeat:Connect(function()
 
-local Players = game:GetService("Players")
-local OldNameCall = nil
-OldNameCall = hookmetamethod(game, "__namecall", function(Self, ...)
-    local NameCallMethod = getnamecallmethod()
-
-    if tostring(string.lower(NameCallMethod)) == "kick" then
-        if getgenv().SendNotifications == true then
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Exunys Developer",
-                Text = "You almost got kicked! Successfully prevented.",
-                Icon = "rbxassetid://6238540373",
-                Duration = 3,
-            })
-        end
-        
-        return nil
+for i, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+    if v.Name == "DisableSpamJump_l" or v.Name == "AnticheatNotifications_l" then 
+     v:remove()
     end
-    
-    return OldNameCall(Self, ...)
+end
 end)
+
 
 local ac = false
 local Tab = Window:MakeTab({
