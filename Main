@@ -1,20 +1,27 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Window = OrionLib:MakeWindow({Name = "Markerware", HidePremium = false, SaveConfig = true, ConfigFolder = "Mware"})
-local LocalPlayer = game:GetService("Players").LocalPlayer
-    local oldhmmi
-    local oldhmmnc
-    oldhmmi = hookmetamethod(game, "__index", function(self, method)
-        if self == LocalPlayer and method:lower() == "kick" then
-            return error("Expected ':' not '.' calling member function Kick", 2)
+
+local Players = game:GetService("Players")
+local OldNameCall = nil
+OldNameCall = hookmetamethod(game, "__namecall", function(Self, ...)
+    local NameCallMethod = getnamecallmethod()
+
+    if tostring(string.lower(NameCallMethod)) == "kick" then
+        if getgenv().SendNotifications == true then
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "Exunys Developer",
+                Text = "You almost got kicked! Successfully prevented.",
+                Icon = "rbxassetid://6238540373",
+                Duration = 3,
+            })
         end
-        return oldhmmi(self, method)
-    end)
-    oldhmmnc = hookmetamethod(game, "__namecall", function(self, ...)
-        if self == LocalPlayer and getnamecallmethod():lower() == "kick" then
-            return
-        end
-        return oldhmmnc(self, ...)
-    end)
+        
+        return nil
+    end
+    
+    return OldNameCall(Self, ...)
+end)
+
 local ac = false
 local Tab = Window:MakeTab({
     Name = "Automation",
