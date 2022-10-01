@@ -45,16 +45,7 @@ Tab:AddButton({
         game:GetService("ReplicatedStorage").RemoteCalls.GameSpecific.Title.UseSpinner:InvokeServer(unpack(args))        
   	end    
 })
-Tab:AddButton({
-	Name = "Menu",
-	Callback = function()
-        local args = {
-            [1] = false
-        }
-        
-        game:GetService("ReplicatedStorage").RemoteCalls.GameSpecific.Title.UseSpinner:InvokeServer(unpack(args))        
-  	end    
-})
+
 Tab:AddButton({
 	Name = "Menu",
 	Callback = function()
