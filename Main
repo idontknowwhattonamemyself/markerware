@@ -1,0 +1,60 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Markerware", HidePremium = false, SaveConfig = true, ConfigFolder = "Mware"})
+local LocalPlayer = game:GetService("Players").LocalPlayer
+    local oldhmmi
+    local oldhmmnc
+    oldhmmi = hookmetamethod(game, "__index", function(self, method)
+        if self == LocalPlayer and method:lower() == "kick" then
+            return error("Expected ':' not '.' calling member function Kick", 2)
+        end
+        return oldhmmi(self, method)
+    end)
+    oldhmmnc = hookmetamethod(game, "__namecall", function(self, ...)
+        if self == LocalPlayer and getnamecallmethod():lower() == "kick" then
+            return
+        end
+        return oldhmmnc(self, ...)
+    end)
+local ac = false
+local Tab = Window:MakeTab({
+    Name = "Automation",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+Tab:AddToggle({
+    Name = "Auto Click",
+    Default = false,
+    Callback = function(Value)
+ac = Value
+    end    
+})
+Tab:AddButton({
+	Name = "Spin (400 clicks)",
+	Callback = function()
+        local args = {
+            [1] = false
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteCalls.GameSpecific.Title.UseSpinner:InvokeServer(unpack(args))        
+  	end    
+})
+Tab:AddSlider({
+    Name = "Walkspeed",
+    Min = 16,
+    Max = 32,
+    Default = 5,
+    Color = Color3.fromRGB(255,255,255),
+    Increment = 1,
+    ValueName = "Walkspeed",
+    Callback = function(Value)
+        if game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character.Humanoid then
+            game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = Value
+            end
+    end    
+})
+game:GetService("RunService").Heartbeat:Connect(function()
+    if ac == true and game:GetService("ReplicatedStorage").RemoteCalls.GameSpecific.Capture.DecreaseClicksLeft then
+        game:GetService("ReplicatedStorage").RemoteCalls.GameSpecific.Capture.DecreaseClicksLeft:InvokeServer()
+
+        end
+    end)
