@@ -56,9 +56,9 @@ Tab:AddButton({
   	end    
 })
 Tab:AddButton({
-	Name = "Inf Ammo",
+	Name = "Mod gun",
 	Callback = function()
-      local mt = getrawmetatable(game)
+local mt = getrawmetatable(game)
 local __oldIndex = mt.__index
 local __oldNewIndex = mt.__newindex
 
@@ -73,7 +73,55 @@ mt.__index = newcclosure(function(a, k)
         end
     end
     return __oldIndex(a, k)
-end)   
+end)
+local mt = getrawmetatable(game)
+local __oldIndex = mt.__index
+local __oldNewIndex = mt.__newindex
+
+if setreadonly then setreadonly(mt, false) else make_writeable(mt) end
+
+mt.__index = newcclosure(function(a, k)
+    if not checkcaller() then
+        if tostring(a) == "BulletSpeed" then
+            if k == "Value" then
+                return 100;
+            end
+        end
+    end
+    return __oldIndex(a, k)
+end)
+local mt = getrawmetatable(game)
+local __oldIndex = mt.__index
+local __oldNewIndex = mt.__newindex
+
+if setreadonly then setreadonly(mt, false) else make_writeable(mt) end
+
+mt.__index = newcclosure(function(a, k)
+    if not checkcaller() then
+        if tostring(a) == "ReloadDelay" then
+            if k == "Value" then
+                return 0;
+            end
+        end
+    end
+    return __oldIndex(a, k)
+end)
+local mt = getrawmetatable(game)
+local __oldIndex = mt.__index
+local __oldNewIndex = mt.__newindex
+
+if setreadonly then setreadonly(mt, false) else make_writeable(mt) end
+
+mt.__index = newcclosure(function(a, k)
+    if not checkcaller() then
+        if tostring(a) == "FireSpeedDelay" then
+            if k == "Value" then
+                return 0;
+            end
+        end
+    end
+    return __oldIndex(a, k)
+end)
   	end    
 })
 Tab:AddSlider({
