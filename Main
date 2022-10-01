@@ -55,6 +55,27 @@ Tab:AddButton({
         game:GetService("ReplicatedStorage").RemoteCalls.GameSpecific.Title.PlayGame:InvokeServer()    
   	end    
 })
+Tab:AddButton({
+	Name = "Inf Ammo",
+	Callback = function()
+      local mt = getrawmetatable(game)
+local __oldIndex = mt.__index
+local __oldNewIndex = mt.__newindex
+
+if setreadonly then setreadonly(mt, false) else make_writeable(mt) end
+
+mt.__index = newcclosure(function(a, k)
+    if not checkcaller() then
+        if tostring(a) == "CurrentAmmo" then
+            if k == "Value" then
+                return math.huge;
+            end
+        end
+    end
+    return __oldIndex(a, k)
+end)   
+  	end    
+})
 Tab:AddSlider({
     Name = "Walkspeed",
     Min = 16,
